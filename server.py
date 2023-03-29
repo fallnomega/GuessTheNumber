@@ -3,6 +3,8 @@ import random
 from flask import Flask
 
 app = Flask(__name__)
+SYSTEM_NUMBER = random.randint(0, 9)
+
 
 @app.route('/')
 def greet():
@@ -19,14 +21,13 @@ def greet():
            f"<a href=\"/8\">8</a><br>" \
            f"<a href=\"/9\">9</a><br>"
 
+
 def get_numbers(function):
     def generate_guess(number):
-        system_number = random.randint(0,9)
-        print(system_number)
-        if system_number > int(number):
+        if SYSTEM_NUMBER < int(number):
             return '<h1 style="color:red;">Too high, guess again</h1><br>' \
                    '<img src="https://media.giphy.com/media/3o6ZtaO9BZHcOjmErm/giphy.gif">'
-        elif system_number < int(number):
+        elif SYSTEM_NUMBER > int(number):
             return '<h1 style="color:blue;">Too low, guess again</h1><br>' \
                    '<img src="https://media.giphy.com/media/jD4DwBtqPXRXa/giphy.gif">'
         else:
@@ -35,36 +36,12 @@ def get_numbers(function):
 
     return generate_guess
 
+
 @app.route('/<int:number>')
 @get_numbers
 def show_results(number):
     return f'<h1>{number}</h1>'
 
 
-
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
-# if you get access denied on 127.0.0.1:5000 ; use chrome://net-internals/#sockets in browser.
-
-# 4. Create a route that can detect the number entered by the user e.g "URL/3" or "URL/9" and checks that number
-# against the generated random number. If the number is too low, tell the user it's too low, same with too high or if
-# they found the correct number. try to make the <h1> text a different colour for each page.  e.g. If the random
-# number was 5:
-#
-# 3 is too low:
-#
-#
-#
-# 7 is too high:
-#
-#
-# and 5 is just right:
-#
-#
-# Here are the GIF URLs I used, but it's way more fun finding your own on giphy.com
-#
-# High: https://media.giphy.com/media/3o6ZtaO9BZHcOjmErm/giphy.gif
-#
-# Low: https://media.giphy.com/media/jD4DwBtqPXRXa/giphy.gif
-#
-# Correct: https://media.giphy.com/media/4T7e4DmcrP9du/giphy.gif
