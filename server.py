@@ -20,14 +20,25 @@ def greet():
            f"<a href=\"/9\">9</a><br>"
 
 def get_numbers(function):
-    def generate_guess(*args):
-        return random.randint(0, 9)
+    def generate_guess(number):
+        system_number = random.randint(0,9)
+        print(system_number)
+        if system_number > int(number):
+            return '<h1 style="color:red;">Too high, guess again</h1><br>' \
+                   '<img src="https://media.giphy.com/media/3o6ZtaO9BZHcOjmErm/giphy.gif">'
+        elif system_number < int(number):
+            return '<h1 style="color:blue;">Too low, guess again</h1><br>' \
+                   '<img src="https://media.giphy.com/media/jD4DwBtqPXRXa/giphy.gif">'
+        else:
+            return '<h1 style="color:green;">You guessed correct</h1><br>' \
+                   '<img src="https://media.giphy.com/media/4T7e4DmcrP9du/giphy.gif">'
+
     return generate_guess
 
 @app.route('/<int:number>')
 @get_numbers
-def show_results(number,the_guess):
-    return f'<h1>{number} placeholder</h1>'
+def show_results(number):
+    return f'<h1>{number}</h1>'
 
 
 
